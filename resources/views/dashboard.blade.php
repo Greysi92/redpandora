@@ -1,136 +1,132 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+
+@section('content')
         <!-- Contenedor de la cabecera del perfil -->
-        <div class="relative bg-blue-600 h-60">
+        <div class="position-relative bg-primary" style="height: 300px;">
             <!-- Foto de portada -->
-            <div class="absolute inset-0 flex justify-center items-center">
-                <div class="relative">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div class="position-relative pb-5">
                     <!-- Foto de perfil -->
-                    <img class="w-36 h-36 rounded-full ring-4 ring-white dark:ring-gray-800 absolute -bottom-18"
-                         src="https://via.placeholder.com/150"
+                    <img class="rounded-circle mt-5 img-fluid" style="height: 220px; width: 220px; margin: 0 auto"
+                         src="https://www.clarin.com/img/2024/07/04/uteodLeuh_2000x1500__1.jpg"
                          alt="Foto de perfil">
                 </div>
             </div>
         </div>
         <!-- Espaciado para la foto de perfil -->
-        <div class="h-24"></div>
+        <div class="mb-5"></div>
         <!-- Información del usuario -->
-        <div class="flex flex-col items-center mt-8">
-            <h2 class="font-semibold text-4xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Nombre del Usuario') }}
-            </h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('@nombredeusuario') }}</p>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('Ciudad, País') }}</p>
+        <div class="text-center mt-5">
+            <h2 class="fw-bold">{{ __('Nombre del Usuario') }}</h2>
+            <p class="text-muted">{{ __('@nombredeusuario') }}</p>
+            <p class="text-muted">{{ __('Ciudad, País') }}</p>
         </div>
         <!-- Botones de interacción del perfil -->
-        <div class="flex justify-center space-x-4 mt-4">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                {{ __('Editar Perfil') }}
-            </button>
-            <button class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-bold py-2 px-4 rounded">
+        <div class="text-center mt-4">
+            <a href="{{ route('profile.edit') }}" class="btn btn-primary me-2">
+                {{__("Editar Perfil")}}
+            </a>
+            <button class="btn btn-outline-secondary me-2">
                 {{ __('Agregar Amigo') }}
             </button>
-            <button class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-100 font-bold py-2 px-4 rounded">
+            <button class="btn btn-outline-secondary">
                 {{ __('Mensaje') }}
             </button>
         </div>
-    </x-slot>
 
-    <div class="py-12 bg-gray-100 dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Columna de la izquierda - Información de usuario -->
-                <div class="col-span-1 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200">
-                        {{ __('Información de Contacto') }}
-                    </h3>
-                    <ul class="mt-4 space-y-2">
-                        <li class="text-gray-600 dark:text-gray-400">{{ __('Email: usuario@example.com') }}</li>
-                        <li class="text-gray-600 dark:text-gray-400">{{ __('Teléfono: +1 234 567 890') }}</li>
-                    </ul>
-                    <hr class="my-6 border-gray-200 dark:border-gray-600">
-                    <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200">
-                        {{ __('Amigos') }}
-                    </h3>
-                    <div class="mt-4 grid grid-cols-3 gap-4">
-                        <div class="text-center">
-                            <img class="w-16 h-16 rounded-full mx-auto" src="https://via.placeholder.com/64" alt="Amigo 1">
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Amigo 1</p>
-                        </div>
-                        <div class="text-center">
-                            <img class="w-16 h-16 rounded-full mx-auto" src="https://via.placeholder.com/64" alt="Amigo 2">
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Amigo 2</p>
-                        </div>
-                        <div class="text-center">
-                            <img class="w-16 h-16 rounded-full mx-auto" src="https://via.placeholder.com/64" alt="Amigo 3">
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Amigo 3</p>
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Columna de la izquierda - Información de usuario y amigos -->
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Amigos Potenciales') }}</h5>
+                            <div id="users-list"></div> <!-- Aquí se cargarán los usuarios -->
                         </div>
                     </div>
                 </div>
 
                 <!-- Columna de la derecha - Publicaciones -->
-                <div class="col-span-2 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200">
-                        {{ __('Publicaciones') }}
-                    </h3>
-                    <!-- Ejemplo de una publicación -->
-                    <div class="mt-6 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md">
-                        <div class="flex items-center space-x-4">
-                            <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="User avatar">
-                            <div>
-                                <h4 class="text-md font-semibold text-gray-800 dark:text-gray-200">Usuario Amigo</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Publicado el 20 de septiembre</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 dark:text-gray-300">Este es un ejemplo de una publicación de texto que aparecería en el perfil del usuario. Los amigos pueden comentar, darle "Me gusta", etc.</p>
-                        </div>
-                        <!-- Botones de interacción -->
-                        <div class="flex space-x-4 mt-4">
-                            <button class="flex items-center text-blue-500 hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M3 8a4 4 0 118 0H3z" />
-                                </svg>
-                                {{ __('Me gusta') }}
-                            </button>
-                            <button class="flex items-center text-blue-500 hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 11V9H7v2h2zm0 4v-2H7v2h2z" clip-rule="evenodd" />
-                                </svg>
-                                {{ __('Comentar') }}
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Más publicaciones -->
-                    <div class="mt-6 bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md">
-                        <!-- Otra publicación de ejemplo -->
-                        <div class="flex items-center space-x-4">
-                            <img class="w-10 h-10 rounded-full" src="https://via.placeholder.com/40" alt="User avatar">
-                            <div>
-                                <h4 class="text-md font-semibold text-gray-800 dark:text-gray-200">Usuario Amigo</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Publicado el 18 de septiembre</p>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <p class="text-gray-600 dark:text-gray-300">Otra publicación de ejemplo que podría aparecer en este perfil. Más interacciones con amigos, como comentarios, me gusta, etc.</p>
-                        </div>
-                        <div class="flex space-x-4 mt-4">
-                            <button class="flex items-center text-blue-500 hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M3 8a4 4 0 118 0H3z" />
-                                </svg>
-                                {{ __('Me gusta') }}
-                            </button>
-                            <button class="flex items-center text-blue-500 hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 11V9H7v2h2zm0 4v-2H7v2h2z" clip-rule="evenodd" />
-                                </svg>
-                                {{ __('Comentar') }}
-                            </button>
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ __('Publicaciones') }}</h5>
+                            <div id="posts-list"></div> <!-- Aquí se cargarán las publicaciones -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout>
+
+
+        <!-- JavaScript -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cargar usuarios para agregar como amigos
+                fetch('/friends/potential')
+                    .then(response => response.json())
+                    .then(data => {
+                        let usersContainer = document.getElementById('users-list');
+                        usersContainer.innerHTML = '';
+
+                        data.forEach(user => {
+                            usersContainer.innerHTML += `
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <h5>${user.name}</h5>
+                                    <p>${user.email}</p>
+                                    <button class="btn btn-outline-primary" onclick="sendFriendRequest(${user.id})">Agregar Amigo</button>
+                                </div>
+                            </div>`;
+                        });
+                    });
+
+                // Cargar publicaciones
+                fetch('/posts')
+                    .then(response => response.json())
+                    .then(data => {
+                        let postsContainer = document.getElementById('posts-list');
+                        postsContainer.innerHTML = '';
+
+                        data.forEach(post => {
+                            postsContainer.innerHTML += `
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle me-3" src="https://via.placeholder.com/40" alt="User avatar">
+                                        <div>
+                                            <h6 class="fw-bold">${post.user.name}</h6>
+                                            <small class="text-muted">Publicado el ${new Date(post.created_at).toLocaleDateString()}</small>
+                                        </div>
+                                    </div>
+                                    <p class="mt-3">${post.content}</p>
+                                    <div class="d-flex justify-content-start mt-3">
+                                        <button class="btn btn-link text-primary me-3">
+                                            <i class="far fa-thumbs-up">Me gusta</i>
+                                        </button>
+                                        <button class="btn btn-link text-primary">
+                                            <i class="fas fa-comment-dots"> Comentar</i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`;
+                        });
+                    });
+            });
+
+            // Función para enviar solicitud de amistad
+            function sendFriendRequest(userId) {
+                fetch(`/friends/request/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                    });
+            }
+        </script>
+@endsection

@@ -17,7 +17,7 @@ class FriendController extends Controller
             'accepted' => false,
         ]);
 
-        return redirect()->back()->with('message', 'Solicitud de amistad enviada.');
+        return response()->json(['message' => 'Solicitud de amistad enviada.']);
     }
 
     // Aceptar solicitud de amistad
@@ -29,10 +29,10 @@ class FriendController extends Controller
 
         if ($friend) {
             $friend->update(['accepted' => true]);
-            return redirect()->back()->with('message', 'Solicitud de amistad aceptada.');
+            return response()->json(['message' => 'Solicitud de amistad aceptada.']);
         }
 
-        return redirect()->back()->with('error', 'Solicitud no encontrada.');
+        return response()->json(['error' => 'Solicitud no encontrada.'], 404);
     }
 
     // Rechazar solicitud de amistad
@@ -44,10 +44,16 @@ class FriendController extends Controller
 
         if ($friend) {
             $friend->delete();
-            return redirect()->back()->with('message', 'Solicitud de amistad rechazada.');
+            return response()->json(['message' => 'Solicitud de amistad rechazada.']);
         }
 
-        return redirect()->back()->with('error', 'Solicitud no encontrada.');
+        return response()->json(['error' => 'Solicitud no encontrada.'], 404);
+    }
+
+    // Obtener lista de posibles amigos
+    public function potentialFriends()
+    {
+        $friends = User::where('id', '!=', auth()->id())->get(); // Todos menos el usuario autenticado
+        return response()->json($friends);
     }
 }
-
