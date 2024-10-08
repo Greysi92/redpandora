@@ -1,26 +1,47 @@
-<x-guest-layout>
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ asset('dist/main.css') }}" rel="stylesheet"> <!-- Mantener la ruta de tu CSS principal -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kMVq2v2Yf2AQjdjygW1yZYQ5l7FYFfzEq8Cj/TBLazSDIGw3T2h+E9AaZ9z1koec6wixZC5b4cYvA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> <!-- Font Awesome -->
+    <title>Registro - Red Social Pandora</title>
     <style>
         /* Estilo general para Pandora */
         body {
-            background-color: #e9ebee;
+            background-color: #f0f2f5;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
+        /* Contenedor principal con imagen de fondo */
+        .bg-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://p4.wallpaperbetter.com/wallpaper/338/727/578/technology-instagram-social-media-hd-wallpaper-preview.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Contenedor del formulario */
         .container {
             width: 100%;
             max-width: 400px;
             margin: auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
         }
 
         /* Estilos para el título */
         h1 {
             text-align: center;
-            color: #3b5998;
-            font-size: 24px;
+            color: #4e54c8;
+            font-size: 28px;
             margin-bottom: 20px;
         }
 
@@ -37,30 +58,33 @@
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-top: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
 
         /* Botón primario */
         .primary-button {
             width: 100%;
-            padding: 10px;
-            background-color: #1877f2;
+            padding: 12px;
+            background-color: #4e54c8;
             color: white;
             font-size: 16px;
             font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             text-align: center;
         }
 
+
+
         .primary-button:hover {
-            background-color: #155cb0;
+            background-color: #3b42b1;
         }
 
         /* Enlace de redirección a login */
@@ -68,7 +92,7 @@
             text-align: center;
             display: block;
             margin-top: 20px;
-            color: #1877f2;
+            color: #4e54c8;
             font-size: 14px;
         }
 
@@ -83,88 +107,101 @@
 
         .password-wrapper i {
             position: absolute;
-            right: 10px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
         }
-    </style>
 
+        /* Estilo para el logo */
+        .logo {
+            position: absolute;<
+            top: 20px;
+            right: 20px;
+            width: 250px;
+            height: 251px;
+        }
+    </style>
+</head>
+<body>
+<!-- Contenedor principal para centrar el contenido -->
+<div class="bg-container">
+    <!-- Logo de la Universidad en la esquina superior derecha -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg/250px-Escudo_de_la_universidad_Mariano_G%C3%A1lvez_Guatemala.svg.png" class="logo" alt="Logo Universidad">
+
+    <!-- Contenedor del formulario -->
     <div class="container">
-        <h1>Red Social Pandora</h1>
+        <h1>Red Social Pandora - Registro</h1>
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
+            <!-- Nombre -->
             <div>
-                <label for="name">{{ __('Name') }}</label>
-                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" />
+                <label for="name">Nombre</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" placeholder="Nombre completo" />
                 <x-input-error :messages="$errors->get('name')" />
             </div>
 
-            <!-- Email Address -->
+            <!-- Correo Electrónico -->
             <div>
-                <label for="email">{{ __('Email') }}</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" />
+                <label for="email">Correo Electrónico</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" placeholder="correo@ejemplo.com" />
                 <x-input-error :messages="$errors->get('email')" />
             </div>
 
-            <!-- Password -->
+            <!-- Contraseña -->
             <div class="password-wrapper">
-                <label for="password">{{ __('Password') }}</label>
-                <input id="password" type="password" name="password" required autocomplete="new-password" />
+                <label for="password">Contraseña</label>
+                <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Contraseña" />
                 <i class="fas fa-eye" id="togglePassword"></i>
                 <x-input-error :messages="$errors->get('password')" />
             </div>
 
-            <!-- Confirm Password -->
+            <!-- Confirmar Contraseña -->
             <div class="password-wrapper">
-                <label for="password_confirmation">{{ __('Confirm Password') }}</label>
-                <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" />
+                <label for="password_confirmation">Confirmar Contraseña</label>
+                <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Repite la contraseña" />
                 <i class="fas fa-eye" id="toggleConfirmPassword"></i>
                 <x-input-error :messages="$errors->get('password_confirmation')" />
             </div>
 
-            <!-- Submit Button -->
+            <!-- Botón de Registro -->
             <div>
-                <button class="primary-button">
-                    {{ __('Register') }}
+                <button class="primary-button" type="submit">
+                    Registrar
                 </button>
             </div>
 
-            <!-- Already registered link -->
+            <!-- Enlace a login -->
             <a class="login-link" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                ¿Ya tienes cuenta? Inicia sesión
             </a>
         </form>
     </div>
+</div>
 
-    <!-- Agregar FontAwesome para el ícono de ojo -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<!-- Agregar FontAwesome para el ícono de ojo -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-G+tn1D1cRzjbOEELK83tv4U27U5u/9kY5Jr2vNYys0E9QRlDgO3Q2EYdxqqzz7Djo9S0P0WZQaz0tv0xJiI7jQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script>
-        // Funcionalidad para mostrar/ocultar la contraseña
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
+<!-- Funcionalidad para mostrar/ocultar la contraseña -->
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#password');
+    togglePassword.addEventListener('click', function () {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
 
-        togglePassword.addEventListener('click', function () {
-            // Alternar el tipo de input entre texto y contraseña
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            // Alternar el ícono del ojo
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-
-        // Funcionalidad para confirmar la contraseña
-        const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
-        const confirmPassword = document.querySelector('#password_confirmation');
-
-        toggleConfirmPassword.addEventListener('click', function () {
-            const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-            confirmPassword.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-    </script>
-</x-guest-layout>
+    const toggleConfirmPassword = document.querySelector('#toggleConfirmPassword');
+    const confirmPassword = document.querySelector('#password_confirmation');
+    toggleConfirmPassword.addEventListener('click', function () {
+        const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPassword.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
+</body>
+</html>

@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
     // Mostrar todas las publicaciones
     public function index()
     {
-        $posts = Post::with('user')->latest()->get(); // Obtener todas las publicaciones con el usuario
-        return response()->json($posts);
+        $posts = Post::with(['user', 'comments'])->latest()->get();
+        return view('posts.index', compact('posts'));
     }
 
-    // Crear una nueva publicaci�n
+    // Almacenar una nueva publicación
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|string|max:255',
+            'content' => 'required|max:255',
         ]);
 
-        $post = Post::create([
+        Post::create([
             'user_id' => auth()->id(),
-            'content' => $request->contentform,
+            'content' => $request->content,
         ]);
 
-        return response()->json($post, 201);
+        return redirect()->back()->with('message', 'Publicación creada exitosamente.');
     }
 }

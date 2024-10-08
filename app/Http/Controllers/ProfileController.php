@@ -13,9 +13,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request)
     {
-        $user = Auth::user();  // Obtiene el usuario autenticado directamente
-        return view('profile.edit', compact('user'));
+        $user = Auth::user();  // Obtener el usuario autenticado
+        $posts = $user->posts()->latest()->get(); // Obtener las publicaciones del usuario
+
+        return view('profile.edit', compact('user', 'posts'));
     }
+
 
     /**
      * Update the user's profile information.
@@ -35,7 +38,7 @@ class ProfileController extends Controller
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
 
-        // Si se proporciona una nueva contraseña, actualizarla
+        // Si se proporciona una nueva contrase?a, actualizarla
         if (!empty($validatedData['password'])) {
             $user->password = Hash::make($validatedData['password']);
         }
