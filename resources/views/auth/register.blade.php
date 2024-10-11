@@ -56,7 +56,8 @@
         /* Estilo para los campos de texto */
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
+        input[type="password"]
+        select {
             width: 100%;
             padding: 12px;
             margin-top: 5px;
@@ -81,6 +82,11 @@
             text-align: center;
         }
 
+        .password-help {
+            color: #888; /* Color gris */
+            font-size: 0.9em; /* Tamaño de fuente más pequeño */
+            margin-top: 5px; /* Espaciado superior */
+        }
 
 
         .primary-button:hover {
@@ -131,7 +137,7 @@
 
     <!-- Contenedor del formulario -->
     <div class="container">
-        <h1>Red Social Pandora - Registro</h1>
+        <h1>Registrate en nuestra Red Social Pandora¡</h1>
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
@@ -148,6 +154,23 @@
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" placeholder="correo@ejemplo.com" />
                 <x-input-error :messages="$errors->get('email')" />
             </div>
+            <!--Pais-->
+            <div>
+                <label for="country">País</label>
+                <select id="country" name="country" required>
+                    <option value="" disabled selected>Selecciona tu país</option>
+                </select>
+                <x-input-error :messages="$errors->get('ciudad')" />
+            </div>
+
+             <!--Ciudad-->
+             <div>
+                <label for="city">Ciudad</label>
+                <select id="city" name="city" required>
+                    <option value="" disabled selected>Selecciona tu ciudad</option>
+                </select>
+                <x-input-error :messages="$errors->get('ciudad')" />
+            </div>
 
             <!-- Contraseña -->
             <div class="password-wrapper">
@@ -155,6 +178,7 @@
                 <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Contraseña" />
                 <i class="fas fa-eye" id="togglePassword"></i>
                 <x-input-error :messages="$errors->get('password')" />
+                <span class="password-help" id="passwordHelp" style="display: none;">Debes crear una contraseña con 8 caracteres, 1 mayúscula, 1 número y 1 carácter especial.</span>
             </div>
 
             <!-- Confirmar Contraseña -->
@@ -203,5 +227,86 @@
         this.classList.toggle('fa-eye-slash');
     });
 </script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordInput = document.getElementById('password');
+    const passwordHelp = document.getElementById('passwordHelp');
+
+    // Mostrar el mensaje al pasar el mouse
+    passwordInput.addEventListener('mouseover', function() {
+        passwordHelp.style.display = 'block';
+    });
+
+    // Ocultar el mensaje al salir el mouse
+    passwordInput.addEventListener('mouseout', function() {
+        passwordHelp.style.display = 'none';
+    });
+});
+</script>
+
+<!--Código para selección de pais y ciudad-->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const countrySelect = document.getElementById('country');
+      const citySelect = document.getElementById('city');
+
+      countrySelect.innerHTML = '<option value="" disabled selected>Selecciona tu pais</option>';
+  
+      fetch('/country-city.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al cargar el archivo JSON');
+          }
+          return response.json();
+        })
+        .then(data => {
+          
+          if (data && typeof data === 'object') {
+            for (let country in data) {
+              const option = document.createElement('option');
+              option.value = country;
+              option.text = country;
+              countrySelect.appendChild(option);
+            }
+          } else {
+            console.error('Formato JSON inválido o sin datos');
+          }
+        })
+        .catch(error => {
+          console.error('Error al cargar el archivo JSON:', error);
+        });
+  
+      
+      countrySelect.addEventListener('change', function() {
+        const selectedCountry = this.value;
+  
+        
+        citySelect.innerHTML = '<option value="" disabled selected>Selecciona tu ciudad</option>';
+  
+        fetch('/country-city.json')
+          .then(response => response.json())
+          .then(data => {
+            const cities = data[selectedCountry];
+            
+            // Agregar las ciudades del país seleccionado
+            if (cities) {
+              cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.text = city;
+                citySelect.appendChild(option);
+              });
+            }
+          })
+          .catch(error => console.error('Error al cargar las ciudades:', error));
+      });
+    });
+  </script>
+  
+  
+
 </body>
 </html>

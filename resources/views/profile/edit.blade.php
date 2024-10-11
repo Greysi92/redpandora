@@ -108,8 +108,8 @@
 <div class="profile-header">
     <img class="profile-photo rounded-circle" src="https://www.clarin.com/img/2024/07/04/uteodLeuh_2000x1500__1.jpg" style="height: 150px; width: 150px;" alt="Foto de perfil">
     <div class="profile-info position-absolute" style="bottom: 20px; left: 180px;">
-        <h2 class="fw-bold">Ale Alexander</h2>
-        <p class="text-muted">451 amigos</p>
+        <h2 class="fw-bold">Ale Alexander</h2><!--dinamico, mostrar informacion de usuario-->
+        <p class="text-muted">451 amigos</p> <!--cambiar a componente dinamico-->
     </div>
 </div>
 
@@ -121,11 +121,8 @@
             <h5>Información del Perfil</h5>
             <a href="#" class="nav-item"><i class="fas fa-info-circle me-2"></i> Información general</a>
             <a href="#" class="nav-item"><i class="fas fa-briefcase me-2"></i> Empleo y formación</a>
-            <a href="#" class="nav-item"><i class="fas fa-home me-2"></i> Lugares de residencia</a>
             <a href="#" class="nav-item"><i class="fas fa-user me-2"></i> Información básica y de contacto</a>
-            <a href="#" class="nav-item"><i class="fas fa-users me-2"></i> Familia y relaciones</a>
             <a href="#" class="nav-item"><i class="fas fa-heart me-2"></i> Información sobre ti</a>
-            <a href="#" class="nav-item"><i class="fas fa-calendar-alt me-2"></i> Acontecimientos importantes</a>
         </div>
 
         <!-- Sección central del perfil -->
@@ -133,14 +130,14 @@
             <h3 class="mb-4">Editar Información del Perfil</h3>
 
             <!-- Formulario de publicación -->
-            <div class="mb-4">
+           <!-- <div class="mb-4">
                 <form action="/post" method="POST">
                     <div class="mb-3">
                         <textarea class="form-control" name="post_content" rows="3" placeholder="¿Qué estás pensando?"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Publicar</button>
                 </form>
-            </div>
+            </div>-->
 
             <!-- Listado de publicaciones -->
             <div class="post">
